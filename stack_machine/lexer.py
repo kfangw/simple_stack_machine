@@ -1,15 +1,12 @@
+import logging
+
 from err import LexError
 from stack_machine.constants import TokenKind, Token
 
+logger = logging.getLogger(__name__)
+
 
 class Lexer(object):
-    """Lexer for Kaleidoscope.
-
-    Initialize the lexer with a string buffer. tokens() returns a generator that
-    can be queried for tokens. The generator will emit an EOF token before
-    stopping.
-    """
-
     def __init__(self, buf):
         assert len(buf) >= 1
         self.buf = buf
