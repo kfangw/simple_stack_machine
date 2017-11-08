@@ -1,6 +1,5 @@
-from stack_machine.constants import TokenKind, Token
-
 from err import LexError
+from stack_machine.constants import TokenKind, Token
 
 
 class Lexer(object):
@@ -15,7 +14,7 @@ class Lexer(object):
         assert len(buf) >= 1
         self.buf = buf
         self.pos = 0
-        self.lastchar = self.buf[0]
+        self.c = self.buf[0]
 
         self._keyword_map = {
             'nop': TokenKind.NOP,
@@ -31,32 +30,32 @@ class Lexer(object):
         }
 
     def tokens(self):
-        while self.lastchar:
+        while self.c:
             # Skip whitespace
-            while self.lastchar.isspace():
+            while self.c.isspace():
                 self._advance()
             # Keyword
-            if self.lastchar.isalpha():
-                id_str = ''
-                while self.lastchar.isalpha():
-                    id_str += self.lastchar
+            if self.c.isalpha():
+                keyword_str = ''
+                while self.c.isalpha():
+                    keyword_str += self.c
                     self._advance()
-                if id_str in self._keyword_map:
-                    yield Token(kind=self._keyword_map[id_str], value=id_str)
+                if keyword_str in self._keyword_map:
+                    yield Token(kind=self._keyword_map[keyword_str], value=keyword_str)
             # Number
-            elif self.lastchar.isdigit():
+            elif self.c.isdigit():
                 num_str = ''
-                while self.lastchar.isdigit():
-                    num_str += self.lastchar
+                while self.c.isdigit():
+                    num_str += self.c
                     self._advance()
                 yield Token(kind=TokenKind.NUMBER, value=num_str)
-            elif self.lastchar:
+            elif self.c:
                 raise LexError('Unknown Token at pos:{0}'.format(self.pos))
         yield Token(kind=TokenKind.EOF, value='')
 
     def _advance(self):
         try:
             self.pos += 1
-            self.lastchar = self.buf[self.pos]
+            self.c = self.buf[self.pos]
         except IndexError:
-            self.lastchar = ''
+            self.c = ''
