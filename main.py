@@ -3,6 +3,7 @@ import logging.config
 import os
 
 from stack_machine.lexer import Lexer
+from stack_machine.parser import Parser
 
 logger = logging.getLogger(__name__)
 
@@ -67,8 +68,12 @@ def setup_logger():
 def main():
     setup_logger()
     lexer = Lexer("nop 1 add 2 sub 3 and 4 or xor 5 not push dup 8 drop 10")
-    for l in lexer.tokens():
-        logger.info(l)
+    # for l in lexer.tokens():
+    #     logger.info(l)
+
+    parser = Parser()
+    top = parser.parse_toplevel("nop 1 add 2 sub 3 and 4 or xor 5 not push dup 8 drop 10")
+    print (top.dump())
 
 
 if __name__ == "__main__":

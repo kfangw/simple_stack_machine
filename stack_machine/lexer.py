@@ -38,17 +38,17 @@ class Lexer(object):
                     keyword_str += self.c
                     self._advance()
                 if keyword_str in self._keyword_map:
-                    yield Token(kind=self._keyword_map[keyword_str], value=keyword_str)
+                    yield Token(kind=self._keyword_map[keyword_str], value=keyword_str, pos=self.pos)
             # Number
             elif self.c.isdigit():
                 num_str = ''
                 while self.c.isdigit():
                     num_str += self.c
                     self._advance()
-                yield Token(kind=TokenKind.NUMBER, value=num_str)
+                yield Token(kind=TokenKind.NUMBER, value=num_str, pos=self.pos)
             elif self.c:
                 raise LexError('Unknown Token at pos:{0}'.format(self.pos))
-        yield Token(kind=TokenKind.EOF, value='')
+        yield Token(kind=TokenKind.EOF, value='', pos=self.pos)
 
     def _advance(self):
         try:
