@@ -36,4 +36,4 @@ class TokenKind(Enum):
     NUMBER = 0x0B
 
 
-Token = namedtuple('Token', 'kind value')
+Token = namedtuple('Token', 'kind value pos')
