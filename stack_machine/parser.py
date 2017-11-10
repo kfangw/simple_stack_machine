@@ -10,7 +10,7 @@ class Parser(object):
         self.token_generator = None
         self.cur_tok = None
 
-    # toplevel ::= ( statement | expression )+
+    # top ::= ( statement | expression )+
     def parse_toplevel(self, buf):
         self.token_generator = Lexer(buf).tokens()
         self.cur_tok = None
