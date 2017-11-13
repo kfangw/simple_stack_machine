@@ -7,6 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 def main():
+
     setup_logger()
 
     parser = Parser()
