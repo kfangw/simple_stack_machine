@@ -48,4 +48,26 @@ source /usr/local/bin/virtualenvwrapper.sh
     * -d: debug option. print stack pointer and value of the stack top
     * -h[--help]: shows this messages
 
-    
+
+# Language Specifications
+* stack
+    * smc emulate stack machine.
+    * no variable
+    * no function
+    * no conditional branch
+    * no jump
+
+* smc supports following operations
+    * push - push following number expression to the stack
+    * dup  - duplicate value of top and put the value on the top
+    * drop - pop top
+    * nop  - nothing. like pass statement in python
+    * add  - pop top twice. add values and push top of the stack  
+    * sub  - ...
+    * and  - bitwise and
+    * or   - bitwise or
+    * xor  - bitwise xor
+    * not  - bitwise not
+
+* smc supports only one data type
+    * number - it is evaluated as signed integer (i64 type)
