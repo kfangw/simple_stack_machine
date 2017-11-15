@@ -1,6 +1,7 @@
 from stack_machine.ast import TopAST, NumberExprAST, StmtNopAST, StmtDropAST, StmtDupAST, StmtPushAST, StmtNotAST, \
     StmtXorAST, StmtOrAST, StmtAndAST, StmtSubAST, StmtAddAST
 from stack_machine.constants import TokenKind
+from stack_machine.err import ParseError
 from stack_machine.lexer import Lexer
 
 
@@ -70,7 +71,13 @@ class Parser(object):
         return StmtNotAST(self.cur_tok.pos, self.cur_tok.value)
 
     def _parse_push_statement(self):
-        return StmtPushAST(self.cur_tok.pos, self.cur_tok.value)
+        push_statement = StmtPushAST(self.cur_tok.pos, self.cur_tok.value)
+        self._get_next_token()
+        if self.cur_tok.kind != TokenKind.NUMBER:
+            raise ParseError("{0} push should be followed by number".format(push_statement.dump()))
+        number_expr = self._parse_number()
+        push_statement.number = number_expr
+        return push_statement
 
     def _parse_dup_statement(self):
         return StmtDupAST(self.cur_tok.pos, self.cur_tok.value)
