@@ -1,5 +1,6 @@
-from llvmlite import ir, binding
 import logging
+
+from llvmlite import ir, binding
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +27,16 @@ class CodeGen(object):
 
         for stmt in node.nodes:
             self._codegen(stmt)
-        self._stack_dump()
+        # self._stack_dump()
+
+        stack = self.mod.globals["stack"]
+        sp = self.mod.globals["sp"]
+        sp_value = self.builder.load(sp)
+        new_sp_value = self.builder.sub(sp_value, ir.Constant(ir.IntType(64), 1))
+        stack_addr = self.builder.gep(stack, [ir.Constant(ir.IntType(64), 0), new_sp_value], inbounds=True)
+        stack_addr_value = self.builder.load(stack_addr)
+        self._call_printf("[sp:%ld][value:%ld]", new_sp_value, stack_addr_value)
+
         self.builder.ret(ir.Constant(ir.IntType(64), 0))
 
         return self.mod
@@ -94,7 +104,6 @@ class CodeGen(object):
     def _codegen_StmtDropAST(self, node):
         self._stack_pop()
 
-
     @staticmethod
     def _make_byte_array(buf):
         b = bytearray(buf)
@@ -113,14 +122,13 @@ class CodeGen(object):
         if self.mod.globals.get("printf"):
             fn = self.mod.globals["printf"]
         else:
-            fnty = ir.FunctionType(ir.IntType(32), (ir.PointerType(ir.IntType(8)), ), var_arg=True)
+            fnty = ir.FunctionType(ir.IntType(32), (ir.PointerType(ir.IntType(8)),), var_arg=True)
             fn = ir.Function(self.mod, fnty, "printf")
             self.mod.globals["printf"] = fn
         return fn
 
     def _call_printf(self, print_format="", *args):
         fn = self._declare_printf()
-        # Make global constant for format string
         cstring = ir.IntType(8).as_pointer()
 
         value = self._make_byte_array((print_format + '\00').encode('ascii'))
@@ -179,6 +187,3 @@ class CodeGen(object):
             stack_value = self.builder.load(stack_addr)
             self._call_printf("[%2ld]-[%5ld]\n", sp_value, stack_value)
             sp_value = self.builder.add(sp_value, ir.Constant(ir.IntType(64), 1))
-
-
-
