@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class Driver(object):
-    def __init__(self, base_dir, input_file_name, output_file_name, keep_ir=False):
+    def __init__(self, base_dir, input_file_name, output_file_name, keep_ir=False, test=False):
         self.base_dir = base_dir
         self.input_file_name = input_file_name
         self.output_file_name = output_file_name

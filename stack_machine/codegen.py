@@ -15,7 +15,7 @@ class CodeGen(object):
         method = '_codegen_' + node.__class__.__name__
         return getattr(self, method)(node)
 
-    def codegen_TopAST(self, node):
+    def codegen_TopAST(self, node, test=False):
 
         fnty = ir.FunctionType(ir.IntType(64), ())
         func = ir.Function(self.mod, fnty, "main")
@@ -35,9 +35,10 @@ class CodeGen(object):
         new_sp_value = self.builder.sub(sp_value, ir.Constant(ir.IntType(64), 1))
         stack_addr = self.builder.gep(stack, [ir.Constant(ir.IntType(64), 0), new_sp_value], inbounds=True)
         stack_addr_value = self.builder.load(stack_addr)
-        self._call_printf("[sp:%ld][value:%ld]", new_sp_value, stack_addr_value)
+        if test:
+            self._call_printf("[sp:%ld][value:%ld]", new_sp_value, stack_addr_value)
 
-        self.builder.ret(ir.Constant(ir.IntType(64), 0))
+        self.builder.ret(stack_addr_value)
 
         return self.mod
 

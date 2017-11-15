@@ -48,7 +48,7 @@ def test_parser(input_str, expected):
     logger.info(input_str)
     top = parser.parse_toplevel(input_str)
     codegen = CodeGen()
-    mod = codegen.codegen_TopAST(top)
+    mod = codegen.codegen_TopAST(top, test=True)
     ll_file = open("test.ll", "w")
     ll_file.write(repr(mod))
     ll_file.close()
