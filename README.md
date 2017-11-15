@@ -71,3 +71,6 @@ source /usr/local/bin/virtualenvwrapper.sh
 
 * smc supports only one data type
     * number - it is evaluated as signed integer (i64 type)
+    
+* return value
+    * compiled program return the top value of the stack
