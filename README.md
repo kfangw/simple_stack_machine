@@ -60,9 +60,9 @@ source /usr/local/bin/virtualenvwrapper.sh
 * smc supports following operations
     * push - push following number expression to the stack
     * dup  - duplicate value of top and put the value on the top
-    * drop - pop top
+    * drop - remove top
     * nop  - nothing. like pass statement in python
-    * add  - pop top twice. add values and push top of the stack  
+    * add  - pop top twice. and push sum of the values to top of the stack  
     * sub  - ...
     * and  - bitwise and
     * or   - bitwise or
