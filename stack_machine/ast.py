@@ -4,8 +4,10 @@ class ASTNode(object):
         self.val = val
 
     def dump(self):
-        return '{0}[{1}]'.format(
-            self.__class__.__name__, self.val
+        return '[Col:{0}]-[Node:{1}]-[Lexeme:{2}]'.format(
+            self.pos,
+            self.__class__.__name__,
+            self.val,
         )
 
 
@@ -16,9 +18,7 @@ class TopAST(ASTNode):
 
     def dump(self):
         return '\n'.join(
-            '{0}[{1}]'.format(
-                node.__class__.__name__, node.val
-            ) for node in self.nodes
+            node.dump() for node in self.nodes
         )
 
 
@@ -75,6 +75,10 @@ class StmtNotAST(StatementAST):
 class StmtPushAST(StatementAST):
     def __init__(self, pos, val):
         super(StmtPushAST, self).__init__(pos, val)
+        self.number = None
+
+    def dump(self):
+        return super(StmtPushAST, self).dump() + '\n' + '\t' + self.number.dump()
 
 
 class StmtDupAST(StatementAST):

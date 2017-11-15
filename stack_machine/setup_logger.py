@@ -2,10 +2,8 @@ import logging
 
 import os
 
-BASE_DIR = os.path.dirname(__file__)
 
-
-def setup_logger():
+def setup_logger(base_dir=os.path.dirname(os.path.dirname(__file__))):
     logging.config.dictConfig(
         {
             "version": 1,
@@ -27,7 +25,7 @@ def setup_logger():
                     "class": "logging.handlers.RotatingFileHandler",
                     "level": "INFO",
                     "formatter": "simple",
-                    "filename": "{0}/.info.log".format(BASE_DIR),
+                    "filename": "{0}/.info.log".format(base_dir),
                     "maxBytes": 10485760,
                     "backupCount": 20,
                     "encoding": "utf8"
@@ -37,7 +35,7 @@ def setup_logger():
                     "class": "logging.handlers.RotatingFileHandler",
                     "level": "ERROR",
                     "formatter": "simple",
-                    "filename": "{0}/.errors.log".format(BASE_DIR),
+                    "filename": "{0}/.errors.log".format(base_dir),
                     "maxBytes": 10485760,
                     "backupCount": 20,
                     "encoding": "utf8"
