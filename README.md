@@ -4,6 +4,10 @@ simple_stack_machine
 # Prerequisites
 ## LLVM
 * brew install llvm
+* echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> ~/.bash_profile
+
+## pip
+* sudo easy_install pip
 
 ## llvmlite
 * git clone https://github.com/numba/llvmlite.git
