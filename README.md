@@ -8,6 +8,7 @@ simple_stack_machine
 
 ## pip
 * sudo easy_install pip
+* sudo pip install enum34
 
 ## llvmlite
 * git clone https://github.com/numba/llvmlite.git
