@@ -4,18 +4,12 @@ simple_stack_machine
 # Prerequisites
 ## LLVM
 * brew install llvm
+* brew upgrade llvm
 * echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> ~/.bash_profile
 
 ## pip
 * sudo easy_install pip
 * sudo pip install enum34
-
-## llvmlite
-* git clone https://github.com/numba/llvmlite.git
-* cd llvmlite
-* python setup.py build
-* python runtests.py
-* python setup.py install
 
 ## virtualenv
 * sudo pip install virtualenvwrapper 
@@ -25,7 +19,7 @@ simple_stack_machine
 export WORKON_HOME=~/.python_virtual_envs
 source /usr/local/bin/virtualenvwrapper.sh
 ```
-* mkvirtualenv --python=python2.7 {env_name}
+* mkvirtualenv --python=python3.6 {env_name}
 * workon {env_name}
 
 ## requirements
@@ -37,7 +31,6 @@ source /usr/local/bin/virtualenvwrapper.sh
 
 * git clone https://github.com/kfangw/simple_stack_machine.git
 * cd simple_stack_machine
-* pip-compile requirements.in
 * pip-sync
 
 ## Test
@@ -50,32 +43,26 @@ source /usr/local/bin/virtualenvwrapper.sh
     * {source_file}: file name to be compiled
     * -o {executable_file}: specify executable file name. it can be ommited.
     * -k: keeps intermediate files such as .ll .s
-    * -d: debug option. print stack pointer and value of the stack top
     * -h[--help]: shows this messages
 
 
 # Language Specifications
-* stack
-    * smc emulate stack machine.
-    * no variable
-    * no function
-    * no conditional branch
-    * no jump
 
-* smc supports following operations
-    * push - push following number expression to the stack
-    * dup  - duplicate value of top and put the value on the top
-    * drop - remove top
-    * nop  - nothing. like pass statement in python
-    * add  - pop top twice. and push sum of the values to top of the stack  
-    * sub  - ...
-    * and  - bitwise and
-    * or   - bitwise or
-    * xor  - bitwise xor
-    * not  - bitwise not
-
-* smc supports only one data type
-    * number - it is evaluated as signed integer (i64 type)
+* Data Type
+   * Signed 64bit integer
+   * No overflow check
+* Stack
+   * A collection of elements which are signed 64bit integers. Maximum length of the stack is 128.
+   * Push operation adds to the collection
+   * Pop operation removes the most recently added element that was not yet removed
+   * Top operation returns the most recently added element
+* Statements (t indicates top of the stack)
+   * ADD - Pop e=stack[t], e'=stack[t-1]. Push e' + e
+   * SUB - Pop e=stack[t], e'=stack[t-1]. Push e' - e
+   * PUSH - Push following data
+   * DROP - Pop e=stack[t]. Discard e
+   * DUP - Top e=stack[t]. Push e
+   * PRINT - Top e=stack[t]. Print e to standard output.
     
 * return value
     * compiled program return the top value of the stack
