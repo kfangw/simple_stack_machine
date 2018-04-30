@@ -22,17 +22,12 @@ class TokenKind(Enum):
     # STOR    pop a, pop b, write b to address a
     """
     EOF    = 0xFF
-    NOP    = 0x00
     ADD    = 0x01
     SUB    = 0x02
-    AND    = 0x03
-    OR     = 0x04
-    XOR    = 0x05
-    NOT    = 0x06
     PUSH   = 0x07
     DUP    = 0x08
     DROP   = 0x09
-    IDENT  = 0x0A
+    PRINT  = 0x0A
     NUMBER = 0x0B
 
 

@@ -37,11 +37,6 @@ class StatementAST(ASTNode):
         super(StatementAST, self).__init__(pos, val)
 
 
-class StmtNopAST(StatementAST):
-    def __init__(self, pos, val):
-        super(StmtNopAST, self).__init__(pos, val)
-
-
 class StmtAddAST(StatementAST):
     def __init__(self, pos, val):
         super(StmtAddAST, self).__init__(pos, val)
@@ -50,26 +45,6 @@ class StmtAddAST(StatementAST):
 class StmtSubAST(StatementAST):
     def __init__(self, pos, val):
         super(StmtSubAST, self).__init__(pos, val)
-
-
-class StmtAndAST(StatementAST):
-    def __init__(self, pos, val):
-        super(StmtAndAST, self).__init__(pos, val)
-
-
-class StmtOrAST(StatementAST):
-    def __init__(self, pos, val):
-        super(StmtOrAST, self).__init__(pos, val)
-
-
-class StmtXorAST(StatementAST):
-    def __init__(self, pos, val):
-        super(StmtXorAST, self).__init__(pos, val)
-
-
-class StmtNotAST(StatementAST):
-    def __init__(self, pos, val):
-        super(StmtNotAST, self).__init__(pos, val)
 
 
 class StmtPushAST(StatementAST):
@@ -90,3 +65,7 @@ class StmtDropAST(StatementAST):
     def __init__(self, pos, val):
         super(StmtDropAST, self).__init__(pos, val)
 
+
+class StmtPrintAST(StatementAST):
+    def __init__(self, pos, val):
+        super(StmtPrintAST, self).__init__(pos, val)

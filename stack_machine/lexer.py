@@ -1,6 +1,6 @@
 import logging
 
-from err import LexError
+from stack_machine.err import LexError
 from stack_machine.constants import TokenKind, Token
 
 logger = logging.getLogger(__name__)
@@ -14,16 +14,12 @@ class Lexer(object):
         self.c = self.buf[0]
 
         self._keyword_map = {
-            'nop': TokenKind.NOP,
             'add': TokenKind.ADD,
             'sub': TokenKind.SUB,
-            'and': TokenKind.AND,
-            'or': TokenKind.OR,
-            'xor': TokenKind.XOR,
-            'not': TokenKind.NOT,
             'push': TokenKind.PUSH,
             'dup': TokenKind.DUP,
             'drop': TokenKind.DROP,
+            'print': TokenKind.PRINT,
         }
 
     def tokens(self):

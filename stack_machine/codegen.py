@@ -12,6 +12,7 @@ class CodeGen(object):
         self.builder = None
 
     def _codegen(self, node):
+
         method = '_codegen_' + node.__class__.__name__
         return getattr(self, method)(node)
 
@@ -35,8 +36,8 @@ class CodeGen(object):
         new_sp_value = self.builder.sub(sp_value, ir.Constant(ir.IntType(64), 1))
         stack_addr = self.builder.gep(stack, [ir.Constant(ir.IntType(64), 0), new_sp_value], inbounds=True)
         stack_addr_value = self.builder.load(stack_addr)
-        if test:
-            self._call_printf("[sp:%ld][value:%ld]", new_sp_value, stack_addr_value)
+        # if test:
+        #     self._call_printf("[sp:%ld][value:%ld]", new_sp_value, stack_addr_value)
 
         self.builder.ret(stack_addr_value)
 
@@ -44,9 +45,6 @@ class CodeGen(object):
 
     def _codegen_NumberExprAST(self, node):
         return ir.Constant(ir.IntType(64), int(node.val))
-
-    def _codegen_StmtNopAST(self, node):
-        pass  # Nothing To Do
 
     def _codegen_StmtAddAST(self, node):
         right_value = self._stack_peek()
@@ -64,36 +62,6 @@ class CodeGen(object):
         result_value = self.builder.sub(left_value, right_value)
         self._stack_push(result_value)
 
-    def _codegen_StmtAndAST(self, node):
-        right_value = self._stack_peek()
-        self._stack_pop()
-        left_value = self._stack_peek()
-        self._stack_pop()
-        result_value = self.builder.and_(left_value, right_value)
-        self._stack_push(result_value)
-
-    def _codegen_StmtOrAST(self, node):
-        right_value = self._stack_peek()
-        self._stack_pop()
-        left_value = self._stack_peek()
-        self._stack_pop()
-        result_value = self.builder.or_(left_value, right_value)
-        self._stack_push(result_value)
-
-    def _codegen_StmtXorAST(self, node):
-        right_value = self._stack_peek()
-        self._stack_pop()
-        left_value = self._stack_peek()
-        self._stack_pop()
-        result_value = self.builder.xor(left_value, right_value)
-        self._stack_push(result_value)
-
-    def _codegen_StmtNotAST(self, node):
-        left_value = self._stack_peek()
-        self._stack_pop()
-        result_value = self.builder.not_(left_value)
-        self._stack_push(result_value)
-
     def _codegen_StmtPushAST(self, node):
         number = self._codegen(node.number)
         self._stack_push(number)
@@ -104,6 +72,16 @@ class CodeGen(object):
 
     def _codegen_StmtDropAST(self, node):
         self._stack_pop()
+
+    def _codegen_StmtPrintAST(self, node):
+        stack = self.mod.globals["stack"]
+        sp = self.mod.globals["sp"]
+        sp_value = self.builder.load(sp)
+        new_sp_value = self.builder.sub(sp_value, ir.Constant(ir.IntType(64), 1))
+        stack_addr = self.builder.gep(stack, [ir.Constant(ir.IntType(64), 0), new_sp_value], inbounds=True)
+        stack_addr_value = self.builder.load(stack_addr)
+        self._call_printf("[sp:%ld][value:%ld]", new_sp_value, stack_addr_value)
+
 
     @staticmethod
     def _make_byte_array(buf):
