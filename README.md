@@ -9,7 +9,6 @@ simple_stack_machine
 
 ## pip
 * sudo easy_install pip
-* sudo pip install enum34
 
 ## virtualenv
 * sudo pip install virtualenvwrapper 
