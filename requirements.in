@@ -1,9 +1,0 @@
-click==6.7
-enum34==1.1.6
-first==2.0.1
-logging==0.4.9.6
-optparse-pretty==0.1.1
-pip-tools==1.10.1
-py==1.4.34
-pytest==3.2.3
-six==1.11.0
